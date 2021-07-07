@@ -1,0 +1,104 @@
+Engine
+    Audio
+        Run Syncronous OPENAL
+        Generator, Mono or Stereo, HRTF or Not
+        Immediate Mode?
+        Dont Add BufferTime to AudioTrigger,Faster Start times, But less accurate
+        Send is just an audio effect?
+        Bake Audio Files to Wav
+        Non Blocking Communication
+    Debug
+        Debug Graphics
+        Debug Audio
+        Create Crash Dump
+        Load Crash Dump
+        Pause, Step, Step Backwards?, Difference Check, Half Speed, Double Speed
+        Auto Save
+        Save State, Saves Everything
+        Load State, Loads Everything
+        Save State Serilization, Saves only Serilizable
+        Method Hot Reload, Search for attribute (source generator?), Copy Text, Reload Method at Runtime
+        Logging
+    Editor
+        Menu (User Insert)
+        Toolbar (User Insert)
+        Right Click Menu (User Insert)
+        Console (Scripting)
+        Console Colors
+    Game
+        XML / Binary
+        Soft Crash
+        Code Reload
+        Scene
+        Scene Graph
+        Nodes (VariableUpdate, FixedUpdate, EnterTree, ExitTree (only run if implemented)) ()
+        Prefabs
+        Game / Scene
+        Tags
+        Undo / Redo
+        Copy / Paste
+        Servers
+        VariableUpdate / FixedUpdate
+        [FixedUpdateRate]
+    Graphics
+        Ubershader vs Permutations
+        Startup Cache Shaders
+        Startup Cache Textures MipMaps / Atlases / Fonts etc
+        Immediate Mode (Rebuild Each Frame, Diff Check)
+        3D Graphics
+        2D UI
+        CameraMode
+    Input
+        Hotkeys XML
+        Generate Interfaces from XML, For Lookups
+        Joypad
+        [Keybind]
+    Networking
+        Crypto
+        Compress
+        DeltaCompression
+    Profiler
+        StartMeasure("Graphics"), Invoke("Graphics") EndMeasure("Graphics")
+        Build UI
+        Let measurements display for a while, for systems that dont run every frame
+        FrameTime, Memory
+    Project
+        New
+        Delete
+        Load
+        Save
+        Publish
+        Reload
+    Reflection
+        Cache
+        Reload on Reset
+    Resources
+        Data Driven Code Generation? Generate Class ForEach Asset, Acces Now Via Assets.Textures.White
+        Shell Script to Convert to Acceptable Formats
+        Bake into Binary Format for Release
+        Read from Build not Target in Debug
+        Dont Hot Reload in Release
+        Dont Copy Shaders
+        Metadata File For Each File? Folder?
+        XML/JSON Editor, Preset XML/JSON Files, Add Key-Values, Add Paths From Asset Folder, Visualize Stuff, Script?
+        Compression
+        Right Click Folder / Toolbar -> Run Function(folderPath)?
+    Tests
+        Replay System
+
+    Pre Build
+    Post Build
+    Shell Programs
+        Converters
+
+    Think About
+        Centralized Database / Memory
+        Code / Metadata Generation
+        Node Systems? DataNodes?
+        Publish / Subscribe Naming
+        Immediate Mode via ResourceIds? PlaySound(id, vol), AddFilter(id, freq)?
+        Job System
+            ParallelFor
+            FrameSync
+            FollowWith
+            DependsOn

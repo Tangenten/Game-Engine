@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoLogo>true</NoLogo>
+    <Win32Icon>Assets\Icons\FaceIcon.ico</Win32Icon>
+    <ApplicationIcon>Assets\Icons\FaceIcon.ico</ApplicationIcon>
+    <Win32Resource />
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputType>Exe</OutputType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <OutputPath>Build\Debug</OutputPath>
+    <IntermediateOutputPath>Build\Debug\obj\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>Build\Debug\obj\</BaseIntermediateOutputPath>
+    <PackageOutputDir>Build\Debug\obj\</PackageOutputDir>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputType>WinExe</OutputType>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+    <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+    <TieredCompilation>true</TieredCompilation>
+    <Optimize>true</Optimize>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <WarningLevel>0</WarningLevel>
+    <DebuggerSupport>false</DebuggerSupport>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>TRACE</DefineConstants>
+    <ExcludeFilesFromDeployment>*.pdb</ExcludeFilesFromDeployment>
+    <OutputPath>Build\Release</OutputPath>
+    <BaseIntermediateOutputPath>Build\Release\obj\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>Build\Release\obj\</IntermediateOutputPath>
+    <PackageOutputDir>Build\Release\obj\</PackageOutputDir>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Silk.NET" Version="2.6.0" />
+    <PackageReference Include="Silk.NET.OpenGL.Extensions.ImGui" Version="2.6.0" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" AfterTargets="PreBuildEvent">
+    <Exec Command="
+    IF EXIST $(ProjectDir)obj (
+      echo &quot;Copying $(ProjectName)\obj Folder...&quot;&#xD;&#xA;
+      xcopy &quot;$(ProjectDir)obj&quot; &quot;$(ProjectDir)$(OutDir)obj&quot; /C /Y /S /E /I /Q&#xD;&#xA;
+      echo &quot;Removing $(ProjectName)\obj Folder...&quot;&#xD;&#xA;
+      rmdir &quot;$(ProjectDir)obj&quot; /S /Q
+    )
+"/>
+  </Target>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="
+      echo &quot;Removing Build Assets Folder...&quot;&#xD;&#xA;
+      rmdir &quot;$(TargetDir)Assets&quot; /S /Q&#xD;&#xA;
+      echo &quot;Copying Assets Folder To Build Folder...&quot;&#xD;&#xA;
+      xcopy &quot;$(ProjectDir)Assets&quot; &quot;$(TargetDir)Assets&quot; /Y /S /E /I /Q&#xD;&#xA;&#xD;&#xA;
+"/>
+  </Target>
+
+</Project>

@@ -1,0 +1,21 @@
+<Project>
+
+    <Target
+        Name="_FixupOutputPathsCheck"
+        BeforeTargets="_CheckForInvalidConfigurationAndPlatform">
+        <PropertyGroup>
+            <EnableBuildPathMismatchWarning>true</EnableBuildPathMismatchWarning>
+            <EnableBaseIntermediateOutputPathMismatchWarning>false</EnableBaseIntermediateOutputPathMismatchWarning>
+        </PropertyGroup>
+    </Target>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <MSBUildProjectExtensionsPath>Build\Debug\obj\</MSBUildProjectExtensionsPath>
+        <MSBuildUserExtensionsPath>Build\Debug\obj\</MSBuildUserExtensionsPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <MSBUildProjectExtensionsPath>Build\Release\obj\</MSBUildProjectExtensionsPath>
+        <MSBuildUserExtensionsPath>Build\Release\obj\</MSBuildUserExtensionsPath>
+    </PropertyGroup>
+</Project>
