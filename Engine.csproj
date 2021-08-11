@@ -7,14 +7,15 @@
     <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoLogo>true</NoLogo>
-    <Win32Icon>Assets\Icons\FaceIcon.ico</Win32Icon>
-    <ApplicationIcon>Assets\Icons\FaceIcon.ico</ApplicationIcon>
+    <Win32Icon>Resources\Icons\FaceIcon.ico</Win32Icon>
+    <ApplicationIcon>Resources\Icons\FaceIcon.ico</ApplicationIcon>
     <Win32Resource />
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -39,11 +40,10 @@
     <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
     <TieredCompilation>true</TieredCompilation>
     <Optimize>true</Optimize>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <WarningLevel>0</WarningLevel>
     <DebuggerSupport>false</DebuggerSupport>
     <DebugSymbols>false</DebugSymbols>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>RELEASE;TRACE</DefineConstants>
     <ExcludeFilesFromDeployment>*.pdb</ExcludeFilesFromDeployment>
     <OutputPath>Build\Release</OutputPath>
     <BaseIntermediateOutputPath>Build\Release\obj\</BaseIntermediateOutputPath>
@@ -54,27 +54,21 @@
 
   <ItemGroup>
     <PackageReference Include="Silk.NET" Version="2.6.0" />
+    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.21.1.1" />
+    <PackageReference Include="Silk.NET.OpenCL" Version="2.6.0" />
     <PackageReference Include="Silk.NET.OpenGL.Extensions.ImGui" Version="2.6.0" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+    <PackageReference Include="CS-Script" Version="4.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="ExtendedXmlSerializer" Version="3.7.1" />
   </ItemGroup>
 
-  <Target Name="PreBuild" AfterTargets="PreBuildEvent">
-    <Exec Command="
-    IF EXIST $(ProjectDir)obj (
-      echo &quot;Copying $(ProjectName)\obj Folder...&quot;&#xD;&#xA;
-      xcopy &quot;$(ProjectDir)obj&quot; &quot;$(ProjectDir)$(OutDir)obj&quot; /C /Y /S /E /I /Q&#xD;&#xA;
-      echo &quot;Removing $(ProjectName)\obj Folder...&quot;&#xD;&#xA;
-      rmdir &quot;$(ProjectDir)obj&quot; /S /Q
-    )
-"/>
-  </Target>
-  
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="
-      echo &quot;Removing Build Assets Folder...&quot;&#xD;&#xA;
-      rmdir &quot;$(TargetDir)Assets&quot; /S /Q&#xD;&#xA;
-      echo &quot;Copying Assets Folder To Build Folder...&quot;&#xD;&#xA;
-      xcopy &quot;$(ProjectDir)Assets&quot; &quot;$(TargetDir)Assets&quot; /Y /S /E /I /Q&#xD;&#xA;&#xD;&#xA;
-"/>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="IF EXIST $(ProjectDir)obj (&#xD;&#xA;echo 'Copying $(ProjectName)\obj Folder...'&#xD;&#xA;xcopy $(ProjectDir)obj $(ProjectDir)$(OutDir)obj /C /Y /S /E /I /Q&#xD;&#xA;echo 'Removing $(ProjectName)\obj Folder... '&#xD;&#xA;rmdir $(ProjectDir)obj /S /Q&#xD;&#xA;)" />
   </Target>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="echo 'Removing Build Resources Folder...'&#xD;&#xA;rmdir $(TargetDir)Resources /S /Q&#xD;&#xA;echo 'Copying Resources Folder To Build Folder...'&#xD;&#xA;xcopy $(ProjectDir)Resources $(TargetDir)Resources /Y /S /E /I /Q&#xD;&#xA;xcopy $(TargetDir)ref $(TargetDir)Resources\NewProjectTemplate\Template /Y /S /E /I /Q&#xD;&#xA;xcopy $(TargetDir)ref $(ProjectDir)Resources\NewProjectTemplate\Template /Y /S /E /I /Q" />
+  </Target>
+  
 </Project>

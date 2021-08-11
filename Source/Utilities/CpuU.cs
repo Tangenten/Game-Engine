@@ -7,9 +7,7 @@ namespace RavUtilities {
 		private static readonly int cacheLineSize = CalculateCacheLineSize();
 		private const int SC_LEVEL1_DCACHE_LINESIZE = 190;
 
-		public static int GetCacheLineSize() {
-			return cacheLineSize;
-		}
+		public static int GetCacheLineSize() { return cacheLineSize; }
 
 		private static int CalculateCacheLineSize() {
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
@@ -22,11 +20,11 @@ namespace RavUtilities {
 			}
 
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-				return (int)sysconf(SC_LEVEL1_DCACHE_LINESIZE);
+				return (int) sysconf(SC_LEVEL1_DCACHE_LINESIZE);
 			}
 
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-				IntPtr sizeOfLineSize = (IntPtr)IntPtr.Size;
+				IntPtr sizeOfLineSize = (IntPtr) IntPtr.Size;
 				sysctlbyname("hw.cachelinesize", out IntPtr lineSize, ref sizeOfLineSize, IntPtr.Zero, IntPtr.Zero);
 				return lineSize.ToInt32();
 			}
@@ -63,11 +61,16 @@ namespace RavUtilities {
 
 		[StructLayout(LayoutKind.Explicit)]
 		private struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_UNION {
-			[FieldOffset(0)] public PROCESSORCORE ProcessorCore;
-			[FieldOffset(0)] public NUMANODE NumaNode;
-			[FieldOffset(0)] public CACHE_DESCRIPTOR Cache;
-			[FieldOffset(0)] private ulong Reserved1;
-			[FieldOffset(8)] private ulong Reserved2;
+			[FieldOffset(0)]
+			public PROCESSORCORE ProcessorCore;
+			[FieldOffset(0)]
+			public NUMANODE NumaNode;
+			[FieldOffset(0)]
+			public CACHE_DESCRIPTOR Cache;
+			[FieldOffset(0)]
+			private ulong Reserved1;
+			[FieldOffset(8)]
+			private ulong Reserved2;
 		}
 
 		private enum LOGICAL_PROCESSOR_RELATIONSHIP {
@@ -101,11 +104,11 @@ namespace RavUtilities {
 				return null;
 			}
 
-			IntPtr Ptr = Marshal.AllocHGlobal((int)ReturnLength);
+			IntPtr Ptr = Marshal.AllocHGlobal((int) ReturnLength);
 			try {
 				if (GetLogicalProcessorInformation(Ptr, ref ReturnLength)) {
 					int size = Marshal.SizeOf<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>();
-					int len = (int)ReturnLength / size;
+					int len = (int) ReturnLength / size;
 					SYSTEM_LOGICAL_PROCESSOR_INFORMATION[] Buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[len];
 					IntPtr Item = Ptr;
 					for (int i = 0; i < len; i++) {

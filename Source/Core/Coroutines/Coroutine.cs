@@ -8,20 +8,22 @@ namespace RavEngine {
 		private Action? onFinished;
 		private IEnumerator routine;
 
-		public Coroutine(IEnumerator routine, Action action = null, uint ticksPerFrame = 1) {
+		public string RoutineName => this.routine.ToString()!;
+
+		public Coroutine(IEnumerator routine, Action onFinished = null, uint ticksPerFrame = 1) {
 			this.routine = routine;
 			this.Finished = false;
-			this.onFinished = action;
 			this.TicksPerFrame = ticksPerFrame;
+			this.onFinished = onFinished;
 		}
 
-		public void Tick() {
+		internal void Tick() {
 			for (int i = 0; i < this.TicksPerFrame && !this.Finished; i++) {
 				if (!this.routine.MoveNext()) this.Finish();
 			}
 		}
 
-		public void Finish() {
+		private void Finish() {
 			if (!this.Finished) {
 				this.Finished = true;
 				this.onFinished?.Invoke();

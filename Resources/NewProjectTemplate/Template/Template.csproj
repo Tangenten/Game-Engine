@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <NoLogo>true</NoLogo>
+        <IsPackable>false</IsPackable>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <Nullable>enable</Nullable>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TrimMode>Link</TrimMode>
+        <TieredCompilation>true</TieredCompilation>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>Build\Debug</OutputPath>
+        <IntermediateOutputPath>Build\Debug\obj\</IntermediateOutputPath>
+        <BaseIntermediateOutputPath>Build\Debug\obj\</BaseIntermediateOutputPath>
+        <PackageOutputDir>Build\Debug\obj\</PackageOutputDir>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+        <PublishSingleFile>true</PublishSingleFile>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+        <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+        <TieredCompilation>true</TieredCompilation>
+        <Optimize>true</Optimize>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <WarningLevel>0</WarningLevel>
+        <DebuggerSupport>false</DebuggerSupport>
+        <DebugSymbols>false</DebugSymbols>
+        <DefineConstants>RELEASE;TRACE</DefineConstants>
+        <ExcludeFilesFromDeployment>*.pdb</ExcludeFilesFromDeployment>
+        <OutputPath>Build\Release</OutputPath>
+        <BaseIntermediateOutputPath>Build\Release\obj\</BaseIntermediateOutputPath>
+        <IntermediateOutputPath>Build\Release\obj\</IntermediateOutputPath>
+        <PackageOutputDir>Build\Release\obj\</PackageOutputDir>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="RavEngine">
+            <HintPath>Engine.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="IF EXIST $(ProjectDir)obj (&#xD;&#xA;echo 'Copying $(ProjectName)\obj Folder...'&#xD;&#xA;xcopy $(ProjectDir)obj $(ProjectDir)$(OutDir)obj /C /Y /S /E /I /Q&#xD;&#xA;echo 'Removing $(ProjectName)\obj Folder... '&#xD;&#xA;rmdir $(ProjectDir)obj /S /Q&#xD;&#xA;)" />
+    </Target>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="&#xD;&#xA;      echo &quot;Removing Build Resources Folder...&quot;&#xD;&#xA;&#xD;&#xA;      rmdir &quot;$(TargetDir)Resources&quot; /S /Q&#xD;&#xA;&#xD;&#xA;      echo &quot;Copying Resources Folder To Build Folder...&quot;&#xD;&#xA;&#xD;&#xA;      xcopy &quot;$(ProjectDir)Resources&quot; &quot;$(TargetDir)Resources&quot; /Y /S /E /I /Q&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;" />
+    </Target>
+
+</Project>

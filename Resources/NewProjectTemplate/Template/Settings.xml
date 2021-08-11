@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Dictionary xmlns:exs="https://extendedxmlserializer.github.io/v2" exs:arguments="string,Object" xmlns="https://extendedxmlserializer.github.io/system">
+    <Item>
+        <Key>STARTUP_SCENE</Key>
+        <Value exs:type="string">Scene</Value>
+    </Item>
+</Dictionary>

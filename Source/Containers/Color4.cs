@@ -8,18 +8,18 @@ namespace RavContainers {
 		private static readonly Vector4 clampMax = new Vector4(1f, 1f, 1f, 1f);
 		private static readonly Vector4 brightness = new Vector4(0.299f, 0.587f, 0.114f, 1f);
 
-		public static readonly Color4 Black = new Color4(0, 0, 0, 1);
-		public static readonly Color4 White = new Color4(1, 1, 1, 1);
+		public static readonly Color4 Black = new Color4(0f, 0f, 0f);
+		public static readonly Color4 White = new Color4(1f);
 		public static readonly Color4 DarkGrey = new Color4(0.75f, 0.75f, 0.75f);
 		public static readonly Color4 Grey = new Color4(0.5f, 0.5f, 0.5f);
 		public static readonly Color4 LightGrey = new Color4(0.25f, 0.25f, 0.25f);
-		public static readonly Color4 Red = new Color4(1, 0, 0, 1);
-		public static readonly Color4 Green = new Color4(0, 1, 0, 1);
-		public static readonly Color4 Blue = new Color4(0, 0, 1, 1);
-		public static readonly Color4 Yellow = new Color4(1, 1, 0, 1);
-		public static readonly Color4 Magenta = new Color4(1, 0, 1, 1);
-		public static readonly Color4 Cyan = new Color4(0, 1, 1, 1);
-		public static readonly Color4 Transparent = new Color4(0, 0, 0, 0);
+		public static readonly Color4 Red = new Color4(1f, 0f, 0f);
+		public static readonly Color4 Green = new Color4(0f, 1f, 0f);
+		public static readonly Color4 Blue = new Color4(0f, 0f);
+		public static readonly Color4 Yellow = new Color4(1f, 1f, 0f);
+		public static readonly Color4 Magenta = new Color4(1f, 0f);
+		public static readonly Color4 Cyan = new Color4(0f);
+		public static readonly Color4 Transparent = new Color4(0f, 0f, 0f, 0f);
 
 		private Vector4 vector;
 
@@ -43,20 +43,28 @@ namespace RavContainers {
 			set => this.vector.W = value;
 		}
 
-		public Color4(float r = 1, float g = 1, float b = 1, float a = 1) {
-			this.vector = new Vector4(r, g, b, a);
-		}
+		public Color4(float r = 1, float g = 1, float b = 1, float a = 1) { this.vector = new Vector4(r, g, b, a); }
 
-		public Color4(byte r = 255, byte g = 255, byte b = 255, byte a = 255) {
-			this.vector = new Vector4(r / 255f, g / 255f, b / 255f, a / 255f);
-		}
+		public Color4(byte r = 255, byte g = 255, byte b = 255, byte a = 255) { this.vector = new Vector4(r / 255f, g / 255f, b / 255f, a / 255f); }
 
-		public Color4(Color4 color) {
-			this.vector = new Vector4(color.R, color.G, color.B, color.A);
-		}
+		public Color4(ushort r = 65535, ushort g = 65535, ushort b = 65535, ushort a = 65535) { this.vector = new Vector4(r / 65535f, g / 65535f, b / 65535f, a / 65535f); }
 
-		private Color4(Vector4 vector) {
-			this.vector = vector;
+		public Color4(Color4 color) { this.vector = new Vector4(color.R, color.G, color.B, color.A); }
+
+		private Color4(Vector4 vector) { this.vector = vector; }
+
+		public Color4(Span<byte> bytes) {
+			if (bytes.Length == 4) {
+				this.vector = new Vector4(bytes[0] / 255f, bytes[1] / 255f, bytes[2] / 255f, bytes[3] / 255f);
+			} else if (bytes.Length == 8) {
+				this.vector = new Vector4(BitConverter.ToUInt16(bytes.Slice(0, 2)) / 65535f, BitConverter.ToUInt16(bytes.Slice(2, 2)) / 65535f, BitConverter.ToUInt16(bytes.Slice(4, 2)) / 65535f, BitConverter.ToUInt16(bytes.Slice(6, 2)) / 65535f);
+			} else if (bytes.Length == 3) {
+				this.vector = new Vector4(bytes[0] / 255f, bytes[1] / 255f, bytes[2] / 255f, 1f);
+			} else if (bytes.Length == 6) {
+				this.vector = new Vector4(BitConverter.ToUInt16(bytes.Slice(0, 2)) / 65535f, BitConverter.ToUInt16(bytes.Slice(2, 2)) / 65535f, BitConverter.ToUInt16(bytes.Slice(4, 2)) / 65535f, 1f);
+			} else {
+				throw new Exception("Cant convert bytes to color");
+			}
 		}
 
 		public void AdjustHue(float amount) {
@@ -131,35 +139,25 @@ namespace RavContainers {
 			return colors;
 		}
 
-		public static float Brightness(Color4 color) {
-			return Vector4.Dot(color.vector, brightness) / 2f;
-		}
+		public static float Brightness(Color4 color) { return Vector4.Dot(color.vector, brightness) / 2f; }
 
 		public static Color4 Grayscale(Color4 color) {
 			float brightness = Brightness(color);
 			return new Color4(brightness, brightness, brightness);
 		}
 
-		public static Color4 GetRandomColor() {
-			return new Color4(RandomU.Get(0f, 1f), RandomU.Get(0f, 1f), RandomU.Get(0f, 1f));
-		}
+		public static Color4 GetRandomColor() { return new Color4(RandomU.Get(0f, 1f), RandomU.Get(0f, 1f), RandomU.Get(0f, 1f)); }
 
 		public static Color4 GetRandomColorScaled(Color4 color, float scalar) {
 			color.vector *= scalar;
 			return color;
 		}
 
-		public static Color4 GetRandomFixedHue(float hue) {
-			return HSVToRGB(new Color4(hue, RandomU.Get(0f, 1f), RandomU.Get(0f, 1f)));
-		}
+		public static Color4 GetRandomFixedHue(float hue) { return HSVToRGB(new Color4(hue, RandomU.Get(0f, 1f), RandomU.Get(0f, 1f))); }
 
-		public static Color4 GetRandomFixedSaturation(float saturation) {
-			return HSVToRGB(new Color4(RandomU.Get(0f, 1f), saturation, RandomU.Get(0f, 1f)));
-		}
+		public static Color4 GetRandomFixedSaturation(float saturation) { return HSVToRGB(new Color4(RandomU.Get(0f, 1f), saturation, RandomU.Get(0f, 1f))); }
 
-		public static Color4 GetRandomFixedBrightness(float brightness) {
-			return HSVToRGB(new Color4(RandomU.Get(0f, 1f), RandomU.Get(0f, 1f), brightness));
-		}
+		public static Color4 GetRandomFixedBrightness(float brightness) { return HSVToRGB(new Color4(RandomU.Get(0f, 1f), RandomU.Get(0f, 1f), brightness)); }
 
 		public static Color4 RGBToHSV(Color4 color) {
 			Vector4 K = new Vector4(0f, -1f / 3f, 2f / 3f, -1f);
@@ -170,7 +168,7 @@ namespace RavContainers {
 			Vector4 q = Vector4.Lerp(new Vector4(p.X, p.Y, p.W, color.R), new Vector4(color.R, p.Y, p.Z, p.X), qx);
 
 			float d = q.X - MathF.Min(q.W, q.Y);
-			const float e = (float)1.0e-10;
+			const float e = (float) 1.0e-10;
 			return new Color4(new Vector4(MathF.Abs(q.Z + (q.W - q.Y) / (6f * d + e)), d / (q.X + e), q.X, color.A));
 		}
 
@@ -184,9 +182,7 @@ namespace RavContainers {
 			return new Color4(new Vector4(color.B * Vector3.Lerp(new Vector3(K.X, K.X, K.X), Vector3.Clamp(p - new Vector3(K.X, K.X, K.X), Vector3.Zero, Vector3.One), color.G), 1));
 		}
 
-		public static Color4 LerpRGB(Color4 color1, Color4 color2, float frac) {
-			return new Color4(Vector4.Lerp(color1.vector, color2.vector, frac));
-		}
+		public static Color4 LerpRGB(Color4 color1, Color4 color2, float frac) { return new Color4(Vector4.Lerp(color1.vector, color2.vector, frac)); }
 
 		public static Color4 LerpHSV(Color4 color1, Color4 color2, float frac) {
 			color1 = RGBToHSV(color1);
@@ -244,33 +240,21 @@ namespace RavContainers {
 			return color;
 		}
 
-		public static bool operator ==(Color4 left, Color4 right) {
-			return left.Equals(right);
-		}
+		public static bool operator ==(Color4 left, Color4 right) { return left.Equals(right); }
 
-		public static bool operator !=(Color4 left, Color4 right) {
-			return !left.Equals(right);
-		}
+		public static bool operator !=(Color4 left, Color4 right) { return !left.Equals(right); }
 
-		public override string ToString() {
-			return $"[FastColor] R({ this.R}) G({ this.G}) B({ this.B}) A({ this.A})";
-		}
+		public override string ToString() { return $"[FastColor] R({this.R}) G({this.G}) B({this.B}) A({this.A})"; }
 
-		public override bool Equals(object obj) {
-			return obj is Color4 other && this.Equals(other);
-		}
+		public override bool Equals(object obj) { return obj is Color4 other && this.Equals(other); }
 
 		private bool Equals(Color4 other) {
 			const float tolerance = 0.001f;
 			return MathF.Abs(this.R - other.R) < tolerance && MathF.Abs(this.G - other.G) < tolerance && MathF.Abs(this.B - other.B) < tolerance && MathF.Abs(this.A - other.A) < tolerance;
 		}
 
-		public static implicit operator Vector4(Color4 color) {
-			return new Vector4(color.R, color.G, color.B, color.A);
-		}
+		public static implicit operator Vector4(Color4 color) { return new Vector4(color.R, color.G, color.B, color.A); }
 
-		public static implicit operator Color4(Vector4 vector) {
-			return new Color4(vector.X, vector.Y, vector.Z, vector.W);
-		}
+		public static implicit operator Color4(Vector4 vector) { return new Color4(vector.X, vector.Y, vector.Z, vector.W); }
 	}
 }

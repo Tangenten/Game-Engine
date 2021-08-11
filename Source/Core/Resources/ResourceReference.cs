@@ -1,30 +1,34 @@
 using System;
-using System.Threading;
 
 namespace RavEngine {
-	public class ResourceReference {
-		private Resource resource;
-		private int referenceCount;
+	public class ResourceReference<T> where T : Resource, IDisposable {
+		internal DateTime fileModifiedData;
+		internal string filePath;
+		internal string resourceName;
+		private bool skipNextReload;
 
-		public ResourceReference(in string filePath, in string resourceName, Action onFileModify = null) {
-			this.resource = new Resource(filePath, resourceName, onFileModify);
+		public T Resource => Engine.Resources.GetResource(this);
+		public bool HasReloaded => this.CheckReloaded();
+
+		public void SkipNextReload() { this.skipNextReload = true; }
+
+		private bool CheckReloaded() {
+			if (this.fileModifiedData != this.Resource.fileModifiedDate) {
+				this.fileModifiedData = this.Resource.fileModifiedDate;
+				if (this.skipNextReload) {
+					this.skipNextReload = false;
+					return false;
+				}
+				return true;
+			}
+			return false;
 		}
 
-		public void RemoveReference() {
-			Interlocked.Decrement(ref this.referenceCount);
-		}
+		~ResourceReference() { Engine.Resources.RemoveReference(this); }
 
-		public Resource GetReference() {
-			Interlocked.Increment(ref this.referenceCount);
-			return new Resource(ref this.resource);
-		}
-
-		public bool IsDead() {
-			return this.referenceCount == 0;
-		}
-
-		public void Update() {
-			this.resource.Update();
+		public void Dispose() {
+			GC.SuppressFinalize(this);
+			Engine.Resources.RemoveReference(this);
 		}
 	}
 }

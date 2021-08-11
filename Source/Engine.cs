@@ -1,116 +1,121 @@
+using RavUtilities;
+
 namespace RavEngine {
 	public static class Engine {
-		public static AudioE Audio = new();
-		public static CoroutinesE Coroutines = new();
-		public static DebugE Debug = new();
-		public static EditorE Editor = new();
-		public static GameE Game = new();
-		public static GraphicsE Graphics = new();
-		public static InputE Input = new();
-		public static NetworkingE Networking = new();
-		public static PostBoxE Postbox = new();
-		public static ProfilerE Profiler = new();
-		public static ReflectionE Reflection = new();
-		public static ResourcesE Resources = new();
-		public static SerilizationE Serilization = new();
-		public static SettingsE Settings = new();
-		public static SignalsE Signals = new();
-		public static TestsE Tests = new();
-		public static ThreadingE Threading = new();
-		public static TimeE Time = new();
-		public static WindowE Window = new();
+		public static AudioE Audio;
+		public static CoroutinesE Coroutines;
+		public static EditorE Editor;
+		public static GameE Game;
+		public static GraphicsE Graphics;
+		public static InputE Input;
+		public static NetworkingE Networking;
+		public static PostBoxE Postbox;
+		public static ProjectE Project;
+		public static ResourcesE Resources;
+		public static SettingsE Settings;
+		public static ThreadingE Threading;
+		public static TimeE Time;
+		public static WindowE Window;
 
 		internal static void Start() {
-			Window.Start();
+			TimerU.StartTimer();
+
+			Settings = new();  // Enable Loading From Settings Early
+			Editor = new();    // Enable Logging Early
+			Resources = new(); // Enable Opening Resources Early
+			Threading = new(); // Enable Starting Threads Early
+
+			Audio = new();
+			Coroutines = new();
+			Game = new();
+			Graphics = new();
+			Input = new();
+			Networking = new();
+			Postbox = new();
+			Project = new();
+			Time = new();
+			Window = new();
 
 			Audio.Start();
 			Coroutines.Start();
-			Debug.Start();
 			Editor.Start();
 			Game.Start();
 			Graphics.Start();
 			Input.Start();
 			Networking.Start();
 			Postbox.Start();
-			Profiler.Start();
-			Reflection.Start();
+			Project.Start();
 			Resources.Start();
-			Serilization.Start();
 			Settings.Start();
-			Signals.Start();
-			Tests.Start();
 			Threading.Start();
 			Time.Start();
+			Window.Start();
+
+			Reset();
+
+			double timeTaken = TimerU.StopTimer();
+			Editor.Console.WriteLine(ConsoleEntry.Info($"Engine Initialized in {timeTaken} Seconds"));
 		}
 
 		internal static void Stop() {
 			Audio.Stop();
 			Coroutines.Stop();
-			Debug.Stop();
 			Editor.Stop();
 			Game.Stop();
 			Graphics.Stop();
 			Input.Stop();
 			Networking.Stop();
 			Postbox.Stop();
-			Profiler.Stop();
-			Reflection.Stop();
+			Project.Stop();
 			Resources.Stop();
-			Serilization.Stop();
 			Settings.Stop();
-			Signals.Stop();
-			Tests.Stop();
 			Threading.Stop();
 			Time.Stop();
 			Window.Stop();
 		}
 
+		internal static void Update() {
+			Project.Update(); // Reload Scripts if Needed
+			Time.Update();    // Increments Time
+			Input.Update();   // Clears Inputs
+			Window.Update();  // Updates Inputs and Other Events
+
+			Settings.Update();  // Checks if Any Settings Should be Reloaded
+			Resources.Update(); // Checks if Any Resources Should be Reloaded
+
+			Networking.Update(); // Collects Network Data and Invokes Listeners if new data
+			Coroutines.Update(); // Invokes Coroutines
+			Threading.Update();  // Removes Jobs
+			Postbox.Update();    // Removes Postboxes if no Listeners
+			Editor.Update();     // Invokes Editors
+
+			Game.Update(); // Runs Game for 1 Frame
+
+			Audio.Update();    // Render Audio
+			Graphics.Update(); // Renders Graphics
+			Editor.Render();   // Renders Editors
+			Window.Render();   // Displays
+		}
+
 		internal static void Reset() {
 			Audio.Reset();
 			Coroutines.Reset();
-			Debug.Reset();
 			Editor.Reset();
 			Game.Reset();
 			Graphics.Reset();
 			Input.Reset();
 			Networking.Reset();
 			Postbox.Reset();
-			Profiler.Reset();
-			Reflection.Reset();
+			Project.Reset();
 			Resources.Reset();
-			Serilization.Reset();
 			Settings.Reset();
-			Signals.Reset();
-			Tests.Reset();
 			Threading.Reset();
 			Time.Reset();
 			Window.Reset();
 		}
 
-		internal static void Update() {
-			Audio.Update();
-			Coroutines.Update();
-			Debug.Update();
-			Editor.Update();
-			Game.Update();
-			Graphics.Update();
-			Input.Update();
-			Networking.Update();
-			Postbox.Update();
-			Profiler.Update();
-			Reflection.Update();
-			Resources.Update();
-			Serilization.Update();
-			Settings.Update();
-			Signals.Update();
-			Tests.Update();
-			Threading.Update();
-			Time.Update();
-			Window.Update();
-		}
-
 		internal static void Run() {
-			while (Window.Open) {
+			while (Window.IsOpen) {
 				Update();
 			}
 		}

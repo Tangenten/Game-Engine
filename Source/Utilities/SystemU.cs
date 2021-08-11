@@ -1,20 +1,23 @@
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 
 namespace RavUtilities {
 	public static class SystemU {
 		private static Mutex globalLock;
 
-		public static bool TryCreateUniqueMutex(in string guid) {
+		public static bool IsProcessUnique(in string guid) {
 			globalLock = new Mutex(false, guid);
 			return globalLock.WaitOne(0, false);
 		}
 
-		public static void LogExceptionsIntoFile() {
-			AppDomain.CurrentDomain.UnhandledException += WriteExceptionIntoFile;
+		public static bool IsProcessUnique() {
+			globalLock = new Mutex(false, Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule.FileName));
+			return globalLock.WaitOne(0, false);
 		}
+
+		public static void LogExceptionsIntoFile() { AppDomain.CurrentDomain.UnhandledException += WriteExceptionIntoFile; }
 
 		private static void WriteExceptionIntoFile(object sender, UnhandledExceptionEventArgs e) {
 			Exception ex = e.ExceptionObject as Exception;

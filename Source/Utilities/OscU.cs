@@ -4,9 +4,7 @@ using System.Runtime.CompilerServices;
 namespace RavUtilities {
 	public static class OscU {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static float SinOsc(float minAmp, float maxAmp, float frequency, float phase, float increment) {
-			return (MathF.Sin((increment + phase * MathF.PI) * frequency) + 1f) / 2f * (maxAmp - minAmp) + minAmp;
-		}
+		public static float SinOsc(float minAmp, float maxAmp, float frequency, float phase, float increment) { return (MathF.Sin((increment + phase * MathF.PI) * frequency) + 1f) / 2f * (maxAmp - minAmp) + minAmp; }
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float PulseOsc(float minAmp, float maxAmp, float frequency, float phase, float increment, float pulse = 0.5f) {
@@ -22,16 +20,16 @@ namespace RavUtilities {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float TriangleOsc(float minAmp, float maxAmp, float frequency, float phase, float increment) {
-			phase = MathU.Mod(phase + increment, (MathF.PI * 2f));
-			float value = -1f + (2f * phase / (MathF.PI * 2f));
+			phase = MathU.Mod(phase + increment, MathF.PI * 2f);
+			float value = -1f + 2f * phase / (MathF.PI * 2f);
 
-			return (2f * (MathF.Abs(value) - 0.5f)) * (maxAmp - minAmp) + minAmp;
+			return 2f * (MathF.Abs(value) - 0.5f) * (maxAmp - minAmp) + minAmp;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float SawOsc(float minAmp, float maxAmp, float frequency, float phase, float increment) {
-			phase = MathU.Mod(phase + increment, (MathF.PI * 2f));
-			float value = -1f + (2f * phase / (MathF.PI * 2f));
+			phase = MathU.Mod(phase + increment, MathF.PI * 2f);
+			float value = -1f + 2f * phase / (MathF.PI * 2f);
 
 			return value * (maxAmp - minAmp) + minAmp;
 		}

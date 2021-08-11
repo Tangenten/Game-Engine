@@ -11,7 +11,7 @@
         "projectName": "Engine",
         "projectPath": "C:\\Users\\Tangent\\RiderProjects\\Rav\\Engine.csproj",
         "packagesPath": "C:\\Users\\Tangent\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tangent\\RiderProjects\\Rav\\Build\\Debug\\obj\\",
+        "outputPath": "C:\\Users\\Tangent\\RiderProjects\\Rav\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tangent\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,13 +40,37 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows",
           "dependencies": {
+            "CS-Script": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "ExtendedXmlSerializer": {
+              "target": "Package",
+              "version": "[3.7.1, )"
+            },
             "Silk.NET": {
+              "target": "Package",
+              "version": "[2.6.0, )"
+            },
+            "Silk.NET.OpenAL.Soft.Native": {
+              "target": "Package",
+              "version": "[1.21.1.1, )"
+            },
+            "Silk.NET.OpenCL": {
               "target": "Package",
               "version": "[2.6.0, )"
             },
             "Silk.NET.OpenGL.Extensions.ImGui": {
               "target": "Package",
               "version": "[2.6.0, )"
+            },
+            "System.CodeDom": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             }
           },
           "imports": [
@@ -59,18 +83,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.5, 5.0.5]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.5.21302.13\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.6.21355.2\\RuntimeIdentifierGraph.json"
         }
       }
     }

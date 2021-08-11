@@ -6,8 +6,8 @@ namespace RavContainers {
 		private static readonly int PaddingMultiplier = CpuU.GetCacheLineSize() / IntPtr.Size;
 
 		private T[] data;
-		public int Size {get; private set;}
-		public int Length {get; private set;}
+		public int Size { get; }
+		public int Length { get; }
 
 		public PaddedArray(int size) {
 			this.Size = PaddingMultiplier * size;

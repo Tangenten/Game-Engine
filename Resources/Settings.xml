@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Dictionary xmlns:exs="https://extendedxmlserializer.github.io/v2" xmlns:ns1="clr-namespace:Silk.NET.Windowing;assembly=Silk.NET.Windowing.Common" exs:arguments="string,Object" xmlns="https://extendedxmlserializer.github.io/system">
+  <Item>
+    <Key>WINDOW_POSITION</Key>
+    <Value exs:type="Vector2">
+      <X>674</X>
+      <Y>480</Y>
+    </Value>
+  </Item>
+  <Item>
+    <Key>IMGUI_SCALE</Key>
+    <Value exs:type="float">1.75</Value>
+  </Item>
+  <Item>
+    <Key>WINDOW_STATE</Key>
+    <Value exs:type="ns1:WindowState">Normal</Value>
+  </Item>
+  <Item>
+    <Key>WINDOW_SIZE</Key>
+    <Value exs:type="Vector2">
+      <X>1857</X>
+      <Y>1374</Y>
+    </Value>
+  </Item>
+  <Item>
+    <Key>BUFFER_SIZE</Key>
+    <Value exs:type="int">1371</Value>
+  </Item>
+  <Item>
+    <Key>DELTA_TIME_MAX</Key>
+    <Value exs:type="double">0.05</Value>
+  </Item>
+  <Item>
+    <Key>FIXED_UPDATES_PER_SECOND</Key>
+    <Value exs:type="int">64</Value>
+  </Item>
+  <Item>
+    <Key>MainMenuBarE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+  <Item>
+    <Key>ConsoleWindowE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+  <Item>
+    <Key>GameViewWindowE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+  <Item>
+    <Key>SceneViewWindowE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+  <Item>
+    <Key>HierarchyWindowE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+  <Item>
+    <Key>InspectorWindowE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+  <Item>
+    <Key>ResourcesWindowE_OPEN</Key>
+    <Value exs:type="boolean">true</Value>
+  </Item>
+</Dictionary>

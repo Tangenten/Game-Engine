@@ -8,36 +8,40 @@ namespace RavContainers {
 		private int index;
 		public int Index {
 			get => this.index;
-			set => this.index = MathU.Mod(value, this.Size);
+			set => this.index = MathU.Mod(value, this.Length);
 		}
 
-		public int Size {get; private set; }
+		public int Length { get; }
 
 		public RingArray(int initialLength) {
-			this.Size = initialLength;
-			this.data = new T[this.Size];
+			this.Length = initialLength;
+			this.data = new T[this.Length];
 			this.Index = 0;
 		}
 
-		public T GetData() {
-			return this.data[this.index];
+		public RingArray(int initialLength, T fillWith) {
+			this.Length = initialLength;
+			this.data = new T[this.Length];
+			this.Index = 0;
+
+			for (int i = 0; i < this.Length; i++) {
+				this.data[i] = fillWith;
+			}
 		}
 
-		public T[] GetAllData() {
-			return this.data;
-		}
+		public ref T this[int index] => ref this.data[index];
 
-		public Span<T> GetSpan() {
-			return new Span<T>(this.data);
-		}
+		public T GetData() { return this.data[this.index]; }
 
-		public Span<T> GetSpanRange(int start, int end) {
-			return new Span<T>(this.data, start, end - start);
-		}
+		public T[] GetAllData() { return this.data; }
+
+		public Span<T> GetSpan() { return new Span<T>(this.data); }
+
+		public Span<T> GetSpanRange(int start, int end) { return new Span<T>(this.data, MathU.Mod(start, this.Length), MathU.Mod(end - start, this.Length)); }
 
 		public void PushData(T data) {
 			this.data[this.index] = data;
-			this.index = MathU.Mod(this.index + 1, this.Size);
+			this.index = MathU.Mod(this.index + 1, this.Length);
 		}
 
 		public void PushData(T[] data) {
@@ -47,15 +51,34 @@ namespace RavContainers {
 		}
 
 		public T PopData() {
-			this.index = MathU.Mod(this.index - 1, this.Size);
-			T data = this.data[this.index];
-			return data;
+			this.index = MathU.Mod(this.index - 1, this.Length);
+			return this.data[this.index];
 		}
 
-		public Span<T> PopData(int count) {
-			int end = this.Index;
-			this.Index -= count;
-			return this.data.AsSpan(new Range(new Index(this.index), new Index(end)));
+		public T[] PopData(int count) {
+			T[] list = new T[count];
+			for (int i = 0; i < count; i++) {
+				list[i] = this.PopData();
+			}
+
+			return list;
+		}
+
+		public T PeekData() {
+			int index = MathU.Mod(this.index - 1, this.Length);
+			return this.data[index];
+		}
+
+		public T[] PeekData(int count) {
+			T[] list = new T[count];
+
+			int index = MathU.Mod(this.index - 1, this.Length);
+			for (int i = 0; i < count; i++) {
+				list[i] = this.data[index];
+				index = MathU.Mod(index - 1, this.Length);
+			}
+
+			return list;
 		}
 	}
 }

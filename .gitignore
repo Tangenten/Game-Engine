@@ -1,0 +1,10 @@
+/Build/*
+/.git/*
+/.idea/*
+/.vs/*
+/obj/*
+/Build
+/.git
+/.idea
+/.vs
+/obj

@@ -4,8 +4,8 @@ using System.Collections;
 namespace RavContainers {
 	public class SwapArray<T> {
 		private T[] data;
-		public int Size {get; private set;}
-		public int Length {get; private set;}
+		public int Size { get; private set; }
+		public int Length { get; private set; }
 
 		public SwapArray(int initialSize) {
 			this.Size = initialSize;
@@ -27,10 +27,9 @@ namespace RavContainers {
 			if (this.Length == 0) {
 				val = default;
 				return false;
-			} else {
-				val = this.data[--this.Length];
-				return true;
 			}
+			val = this.data[--this.Length];
+			return true;
 		}
 
 		public void Remove(int index) {
@@ -55,36 +54,20 @@ namespace RavContainers {
 			Array.Resize(ref this.data, this.Size);
 		}
 
-		public Span<T> GetSpan() {
-			return new Span<T>(this.data);
-		}
+		public Span<T> GetSpan() { return new Span<T>(this.data); }
 
-		public Span<T> GetSpanRange(int start, int end) {
-			return new Span<T>(this.data, start, end - start);
-		}
+		public Span<T> GetSpanRange(int start, int end) { return new Span<T>(this.data, start, end - start); }
 
-		public static void Copy(ref SwapArray<T> sourceArray, ref SwapArray<T> destinationArray, int start, int end) {
-			Array.Copy(sourceArray.data, start, destinationArray.data, start, end - start);
-		}
+		public static void Copy(ref SwapArray<T> sourceArray, ref SwapArray<T> destinationArray, int start, int end) { Array.Copy(sourceArray.data, start, destinationArray.data, start, end - start); }
 
-		public static void Copy(ref SwapArray<T> sourceArray, ref SwapArray<T> destinationArray, int sourceStart, int destinationStart, int length) {
-			Array.Copy(sourceArray.data, sourceStart, destinationArray.data, destinationStart, length);
-		}
+		public static void Copy(ref SwapArray<T> sourceArray, ref SwapArray<T> destinationArray, int sourceStart, int destinationStart, int length) { Array.Copy(sourceArray.data, sourceStart, destinationArray.data, destinationStart, length); }
 
-		public void Fill(T element) {
-			Array.Fill(this.data, element);
-		}
+		public void Fill(T element) { Array.Fill(this.data, element); }
 
-		public void Fill(T element, int start, int end) {
-			Array.Fill(this.data, element, start, end - start);
-		}
+		public void Fill(T element, int start, int end) { Array.Fill(this.data, element, start, end - start); }
 
-		public void Sort(IComparer comparer) {
-			Array.Sort(this.data, comparer);
-		}
+		public void Sort(IComparer comparer) { Array.Sort(this.data, comparer); }
 
-		public void Sort(IComparer comparer, int start, int end) {
-			Array.Sort(this.data, start, end, comparer);
-		}
+		public void Sort(IComparer comparer, int start, int end) { Array.Sort(this.data, start, end, comparer); }
 	}
 }
